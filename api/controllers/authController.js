@@ -46,7 +46,6 @@ exports.userCreate = async (req, res) => {
             { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'Strict' })
             .status(201)
             .json({ message: 'User created successfully', userId: result.userId, nombre: nombre,  token: result.token });
-
         } else {
             return res.status(400).json({ message: result.message });
         }

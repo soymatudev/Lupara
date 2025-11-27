@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const Logger = require('../utils/Logger');
 
 const { userLogin, userCreate, userLogout } =  require('../controllers/authController');
 

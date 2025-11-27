@@ -71,12 +71,11 @@ exports.userCreate = async (id_rol, nombre, apellido_paterno, apellido_materno, 
                 { expiresIn: '1h' }
             );
 
-            return { success: true, token, userId: result.insertId.toString() };
+            return { success: true, token, userId: result.insertId.toString(), nombre: nombre };
         } else {
             Logger.warn(`User creation failed for ${nombre}`);
             return { success: false, message: 'User creation failed' };
         }
-
     } catch (error) {
         Logger.error(`User creation error: ${error.message}`);
         throw new Error('User creation failed');

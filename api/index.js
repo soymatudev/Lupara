@@ -32,6 +32,10 @@ app.use('/reservas', require('./routes/reservaRoutes'));
 
 app.use('/health', require('./routes/healthRoutes'));
 
+/* ##### COMPONENTES ROUTEs ##### */
+
+app.use('/componentes', require('./routes/componentesRoutes'));
+
 
 app.listen(PORT, () => {
     Logger.info(`Server running on http://localhost:${PORT}`);
