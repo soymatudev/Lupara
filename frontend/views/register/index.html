@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Nuevo Usuario</title>
+    
+    <link rel="stylesheet" href="register.css">
+</head>
+<body class="bg-gradient-tech flex items-center justify-center min-h-screen p-4">
+
+    <div class="register-card w-md max-w-lg mx-auto p-8 rounded-xl shadow-2xl animate-fade-in">
+        
+        <div class="text-center mb-6">
+            <svg class="mx-auto h-12 w-auto text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+            </svg>
+            <h2 class="mt-4 text-3xl font-extrabold text-gray-900">
+                Registro de Nuevo Usuario
+            </h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Completa tus datos para crear una cuenta
+            </p>
+        </div>
+
+        <form id="userRegisterForm" class="space-y-4">
+            
+            <div>
+                <label for="id_rol" class="block text-sm font-medium text-gray-700">
+                    Tipo de Rol
+                </label>
+                <select id="id_rol" name="id_rol" required class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150 ease-in-out">
+                </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre(s)</label>
+                    <input id="nombre" name="nombre" type="text" required class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150 ease-in-out">
+                </div>
+                <div>
+                    <label for="apellido_paterno" class="block text-sm font-medium text-gray-700">Apellido Paterno</label>
+                    <input id="apellido_paterno" name="apellido_paterno" type="text" class="fblock w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150 ease-in-out">
+                </div>
+            </div>
+            
+            <div>
+                <label for="apellido_materno" class="block text-sm font-medium text-gray-700">Apellido Materno (Opcional)</label>
+                <input id="apellido_materno" name="apellido_materno" type="text" class="fblock w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150 ease-in-out">
+            </div>
+
+            <div>
+                <label for="correo" class="block text-sm font-medium text-gray-700">
+                    Correo Electrónico
+                </label>
+                <input id="correo" name="correo" type="email" autocomplete="email" required class="fblock w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150 ease-in-out">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">
+                    Contraseña
+                </label>
+                <input id="password" name="password" type="password" required class="fblock w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition duration-150 ease-in-out">
+            </div>
+
+            <div class="mt-6">
+                <button type="submit"
+                        class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                    Registrar Cuenta
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                ¿Ya tienes una cuenta?
+                <a href="/views/auth/index.html" class="font-medium text-blue-600 hover:text-blue-500">
+                    Inicia sesión aquí
+                </a>
+            </p>
+        </div>
+
+    </div>
+
+    <link href="/css/style.css" rel="stylesheet">
+    <script type="module" src="./register.js"></script>
+</body>
+</html>

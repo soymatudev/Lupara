@@ -1,0 +1,16 @@
+/* Estilos heredados del login para la consistencia visual */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+.bg-gradient-tech {
+    background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+}
+.register-card {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(209, 213, 219, 0.7);
+}

@@ -1,0 +1,17 @@
+/* Opcional: Para animaciones o gradientes personalizados no triviales con Tailwind */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+/* Estilos para el background que combina colores y un patrón sutil */
+.bg-gradient-tech {
+    background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%); /* Colores base del diseño minimalista */
+}
+.login-card {
+    backdrop-filter: blur(10px); /* Efecto de cristal esmerilado */
+    background-color: rgba(255, 255, 255, 0.8); /* Blanco translúcido */
+    border: 1px solid rgba(209, 213, 219, 0.7); /* Borde sutil */
+}
