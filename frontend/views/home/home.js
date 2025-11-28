@@ -5,6 +5,11 @@ const searchInput = document.getElementById('search-input');
 const searchResultsContainer = document.getElementById('search-results-container');
 const searchButton = document.getElementById('search-button');
 const logoLink = document.querySelector('.logo-link');
+const logoutButton = document.getElementById('logout-button');
+
+//searchInput.addEventListener('input', debounce(handleSearch, 300));
+searchButton.addEventListener('click', () => handleSearch(searchInput.value, true));
+logoutButton.addEventListener('click', () => logout());
 
 const SearchService = {
     search: async (query) => {
@@ -19,14 +24,20 @@ const SearchService = {
             { id: 3, name: "Spa Relájate", service: "Bienestar" },
         ];
         return simulatedData.filter(item => 
-            item.name.toLowerCase().includes(query.toLowerCase()) || 
-            item.service.toLowerCase().includes(query.toLowerCase())
+            item.name.toLowerCase().includes(query.toLowerCase().trim()) || 
+            item.service.toLowerCase().includes(query.toLowerCase().trim())
         ).slice(0, 5);
     }
 };
 
-searchInput.addEventListener('input', debounce(handleSearch, 300));
-searchButton.addEventListener('click', () => handleSearch(searchInput.value, true));
+async function logout() {
+    try {
+        await api.post('/auth/logout');
+        window.location.href = '/views/auth/login.html';
+    } catch (error) {
+        Alerts.showError('Error de Logout', 'No se pudo cerrar la sesión.');
+    }
+}
 
 async function handleSearch(query, isButtonClick = false) {
     if (query.length < 3 && !isButtonClick) {
@@ -77,5 +88,5 @@ function debounce(func, delay) {
 
 logoLink.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/views/empresa/index.html'; 
+    window.location.href = '/views/home/'; 
 });
