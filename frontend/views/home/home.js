@@ -1,4 +1,6 @@
 import { api } from '../shared/ApiClient.js';
+import { RouterViews } from '../shared/RouterViews.js';
+import { AuthService } from '../shared/AuthService.js';
 import { Alerts } from '../shared/Alerts.js'; 
 
 const searchInput = document.getElementById('search-input');
@@ -32,8 +34,8 @@ const SearchService = {
 
 async function logout() {
     try {
-        await api.post('/auth/logout');
-        window.location.href = '/views/auth/login.html';
+        await AuthService.logoutUser();
+        RouterViews.auth();
     } catch (error) {
         Alerts.showError('Error de Logout', 'No se pudo cerrar la sesión.');
     }
@@ -88,5 +90,5 @@ function debounce(func, delay) {
 
 logoLink.addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = '/views/home/'; 
+    RouterViews.home();
 });

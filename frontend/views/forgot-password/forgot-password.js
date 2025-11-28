@@ -1,4 +1,5 @@
 import { Alerts } from '../shared/Alerts.js'; 
+import { RouterViews } from '../shared/RouterViews.js';
 import { api } from '../shared/ApiClient.js'; // Necesitas el cliente base
 
 document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {

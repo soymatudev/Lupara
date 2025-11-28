@@ -56,9 +56,9 @@ exports.userCreate = async (req, res) => {
 }
 
 exports.userLogout = (req, res) => {
-    res.clearCookie('token');
+    res.clearCookie('access_token');
     res.status(200).json({ message: 'Logout successful' });
-    res.sendFile('index.html', { root: 'public' });
+    res.sendFile('/views/auth/index.html', { root: 'frontend' });
     Logger.info('User logged out successfully');
 }
 

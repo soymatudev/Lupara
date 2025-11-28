@@ -1,4 +1,5 @@
 import { AuthService } from '../shared/AuthService.js'; 
+import { RouterViews } from '../shared/RouterViews.js';
 import { ComponentesService } from '../shared/ComponentesService.js';
 import { Alerts } from '../shared/Alerts.js';         
 
@@ -31,7 +32,7 @@ document.getElementById('userRegisterForm').addEventListener('submit', async (e)
         const result = await AuthService.registerUser(userData);
         Alerts.showSuccess('¡Registro Exitoso!', `Bienvenido ${result.nombre}. Tu cuenta ha sido creada.`);
         setTimeout(() => {
-            window.location.href = '/views/auth/'; 
+            RouterViews.auth();
         }, 3200);
     } catch (error) {
         Alerts.showError('Fallo al Registrar', error.message);
