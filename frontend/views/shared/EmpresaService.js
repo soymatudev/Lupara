@@ -9,6 +9,14 @@ export const EmpresaService = {
         return api.get(`/empresas/${empresaId}`);
     },
 
+    getEmpresaImages: async (empresaId) => {
+        return api.get(`/empresas/${empresaId}/images`);
+    },
+
+    getEmpresaSlots: async (empresaId, selectDate) => {
+        return api.get(`/empresas/${empresaId}/slots/${selectDate}`);
+    },
+
     createEmpresa: async (empresaData) => {
         return api.post('/empresas', empresaData);
     },

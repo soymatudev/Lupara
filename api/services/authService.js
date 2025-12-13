@@ -81,3 +81,13 @@ exports.userCreate = async (id_rol, nombre, apellido_paterno, apellido_materno, 
         throw new Error('User creation failed');
     }
 }
+
+exports.verifyToken = (token) => {
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        return { userId: decoded.UserId, nombre: decoded.nombre, role: decoded.role };
+    } catch (error) {
+        Logger.error(`Token verification error: ${error.message}`);
+        throw new Error('Invalid or expired token');
+    }
+}

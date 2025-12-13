@@ -15,10 +15,10 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
 
     try {
         const result = await AuthService.loginUser(userData);
-        Alerts.showSuccess('¡Bienvenido!', `Has iniciado sesión como ${result.nombre || result.userId}.`);
+        Alerts.showSuccess('¡Bienvenido!', `Has iniciado sesión como ${result.nombre || result.userId}.`, 1500);
         setTimeout(() => {
             RouterViews.home();
-        }, 3000);
+        }, 1500);
     } catch (error) {
         Alerts.showError('Fallo en el Login', error.message);
     }

@@ -42,8 +42,8 @@ Se utiliza una estrategia de **Doble Base de Datos (MariaDB)** para una mayor se
 | :---------------- | :------------ | :----------------------------------------------------------------------- |
 | **Plataforma**    | Node.js       | Entorno de ejecución asíncrono.                                          |
 | **Framework**     | Express.js    | Creación de la API REST.                                                 |
-| **Base de Datos** | MariaDB       | Sistema de gestión de bases de datos relacional.                         |
-| **Driver/ORM**    | `mariadb`     | Conexión directa y uso de Pools para la BD.                              |
+| **Base de Datos** | PostgreSQL    | Sistema de gestión de bases de datos relacional.                         |
+| **Driver/ORM**    | `pg`          | Conexión directa y uso de Pools para la BD.                              |
 | **Hosting**       | Vercel        | Despliegue como _Serverless Function_ y _Hosting_ estático del Frontend. |
 | **Hash**          | Bcrypt        | Hash de password para la seguridad en la BD.                             |
 | **Auth**          | JWT           | Envio de informacion sencible del usuario.                               |
@@ -93,76 +93,22 @@ Sujeto a cambios
 
 - **Main**: Principal
 - **Developer**: De aqui parten las siguientes ramas
-- **Vista1/nombre**: Pantalla de Fronted
-- **Vista2/nombre**: Pantalla de Fronted
-- **Vista3/nombre**: Pantalla de Fronted
-- **Vista4/nombre**: Pantalla de Fronted
-- **Vista5/nombre**: Pantalla de Fronted
-- **Vista6/nombre**: Pantalla de Fronted
-- **Componentes/nombre**: Componentes a usar en Front (Selects, Botones, etc.).
-- **Servicios1/nombre**: Tres servicios de tres pantallas.
-- **Servicios2/nombre**: Tres servicios de tres pantallas.
-- **DemasAPI/nombre**: Controladores, index, enrutamientos, sesiones, etc.
+- **Features**: Funcionalidades
+- **FeaturesTest**: Funcionaliadesde que quiero probar
 
-### Para configurar su git
+### Vistas Nuevas
 
-```bash
- - git config --global user.email 'tu_correo@gmail.com'
- - git config --global user.name 'tu_usuario'
-```
+Se crearon 34vistas
 
-## Pasos para crear tu rama en el proyecto
+- **Auth**: Es el login principal de la aplicacion
+- **Forgot-Password**: Para la parte de "Olvidates tu contrasena? "
+- **Home**: El inicio o vista principal de la aplicacion
+- **Register**: En caso de no tener cuenta aqui se puede registrar
 
-### Para quienes ya lo clonaron
+### Adicionales
 
-- Borrar la carpeta que hicieron en la clase para que comiencen de nuevo bien
+- Se implementó un diseno con Tailwind para poder hacer un archivo de styles compartido
 
-### Para todos
+- Se implementó Vite para que se encargue la actualización automatica de los componentes
 
-- Crear una carpeta en el escritorio llamada **"proyecto"**
-- Click derecho en la carpeta y seleccionar **"Open with Git Bash here"** **(se te abrira el git bash)**
-- Escrbir en git bash el comando
-
-```bash
-  git clone https://github.com/IngMiranda/IngenieriaSoftware.git
-```
-
-- Se debe de ver como si se descargara algo
-- Escrbir en git bash el comando
-  cd IngenieriaSoftware
-- En caso de que no entre, darle click derecho a la carpeta que se acaba de descargar y seleccionar **"Open with Git Bash here"**
-- Para identificar que ya estan dentro de la carpeta revisen la bash ya que les coloca en color la ruta en donde se encuentran y ademas deberia de terminar en la palabra **"main"**
-- Escrbir en git bash el comando para cambiar a la rama developer
-  git switch developer
-- Escribir en git bash el comando para crear una nueva rama saliente de developer **(cambiar juan por su nombre en minusculas)**
-
-```bash
-  git branch juan
-```
-
-- Escrbir en git bash el comando para cambiar a la rama developer **(cambiar juan por su nombre en minusculas)**
-
-```bash
-  git switch juan
-```
-
-### Para todos
-
-Ahora ya debes de tener tu repositorio clonado y para poder trabajar, vamos a probarlo
-
-- Hay una carpeta llamada **"docs"**, en ella crearan una carpeta a la que le pondran su nombre en minusculas
-- Dentro de la carpeta que acabas de crear, ahora crea un archivo nombrado **"tu_nombre.sh"**
-- Dentro del archivo escribir lo siguiente
-
-```bash
-#!/bin/bash
-echo "Hello World"
-```
-
-- Lo guardas y escriben los siguientes comando por separado **(escribes un comando y das enter, luego el que sigue)**, cambiar juan por su nombre en minusculas
-
-```bash
-  git add .
-  git commit -m "Test Repo"
-  git push -u origin juan
-```
+- Se restructuro parte de la base de datos con el fin de que la galeria y varios componentes mas se carguen dinamicamente

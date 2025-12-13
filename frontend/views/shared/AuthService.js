@@ -14,4 +14,8 @@ export const AuthService = {
         return api.post('/auth/logout');
     },
 
+    isLoggedIn: async () => {
+        return api.get('/auth/status');
+    }
+
 };
