@@ -34,10 +34,12 @@ async function fetchProviderDetails(id) {
     setTimeout(async () => {
       const response = await EmpresaService.getEmpresaById(id);
       const responseImages = await EmpresaService.getEmpresaImages(id);
+      const responseUrlMaps = await EmpresaService.getEmpresaMaps(providerId);
 
       renderDetails(response);
       renderGallery(responseImages);
-    }, 1000);
+      renderMapsSection(responseUrlMaps.sitio_web_maps);
+    }, 1500);
   } catch (error) {
     Alerts.showError(
       "Error",
@@ -101,6 +103,21 @@ function renderGallery(images) {
         `;
     galleryContainer.innerHTML += itemHtml;
   });
+}
+
+function renderMapsSection(address) {
+  const mapsContainer = document.getElementById("maps-section");
+  const mapsHtml = `
+      <iframe
+        src="${address}"
+        style="border: 0"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        class="h-full w-full"
+      ></iframe>
+    `;
+  mapsContainer.innerHTML = mapsHtml;
 }
 
 async function updateAvailableSlots() {

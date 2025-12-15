@@ -59,6 +59,18 @@ exports.getEmpresaImages = async (empresaId) => {
   }
 };
 
+exports.getEmpresaMaps = async (empresaId) => {
+  const sql = `select sitio_web_maps from reserva.proveedores where id = ?`;
+  try {
+    const results = await QueryHandler.execute(sql, [empresaId], "main");
+    Logger.info(`Fetched ${results.length} maps for empresa ID: ${empresaId}`);
+    return results[0];
+  } catch (error) {
+    Logger.error(`Error fetching empresa maps from database: ${error.message}`);
+    throw new Error("Failed to fetch empresa maps");
+  }
+};
+
 exports.getEmpresaSlots = async (empresaId, selectDate) => {
   const SLOT_DURATION_MINUTES = 30;
 

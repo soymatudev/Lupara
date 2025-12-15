@@ -1,35 +1,39 @@
 import { api } from "./ApiClient";
 
 export const EmpresaService = {
-    getEmpresas: async () => {
-        return api.get('/empresas');
-    },
+  getEmpresas: async () => {
+    return api.get("/empresas");
+  },
 
-    getEmpresaById: async (empresaId) => {
-        return api.get(`/empresas/${empresaId}`);
-    },
+  getEmpresaById: async (empresaId) => {
+    return api.get(`/empresas/${empresaId}`);
+  },
 
-    getEmpresaImages: async (empresaId) => {
-        return api.get(`/empresas/${empresaId}/images`);
-    },
+  getEmpresaImages: async (empresaId) => {
+    return api.get(`/empresas/${empresaId}/images`);
+  },
 
-    getEmpresaSlots: async (empresaId, selectDate) => {
-        return api.get(`/empresas/${empresaId}/slots/${selectDate}`);
-    },
+  getEmpresaMaps: async (empresaId) => {
+    return api.get(`/empresas/${empresaId}/maps`);
+  },
 
-    createEmpresa: async (empresaData) => {
-        return api.post('/empresas', empresaData);
-    },
+  getEmpresaSlots: async (empresaId, selectDate) => {
+    return api.get(`/empresas/${empresaId}/slots/${selectDate}`);
+  },
 
-    updateEmpresa: async (empresaId, empresaData) => {
-        return api.put(`/empresas/${empresaId}`, empresaData);
-    },
+  createEmpresa: async (empresaData) => {
+    return api.post("/empresas", empresaData);
+  },
 
-    deleteEmpresa: async (empresaId) => {
-        return api.delete(`/empresas/${empresaId}`);
-    },
+  updateEmpresa: async (empresaId, empresaData) => {
+    return api.put(`/empresas/${empresaId}`, empresaData);
+  },
 
-    getFeaturedEstablishments: async () => {
-        return api.get('/empresas/destacadas');
-    }
-}
+  deleteEmpresa: async (empresaId) => {
+    return api.delete(`/empresas/${empresaId}`);
+  },
+
+  getFeaturedEstablishments: async () => {
+    return api.get("/empresas/destacadas");
+  },
+};

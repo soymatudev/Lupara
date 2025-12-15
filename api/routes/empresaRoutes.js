@@ -5,6 +5,7 @@ const {
   getAllEmpresasInfo,
   getEmpresaById,
   getEmpresaImages,
+  getEmpresaMaps,
   getEmpresaSlots,
   getFeatured,
 } = require("../controllers/empresaController");
@@ -16,6 +17,8 @@ router.get("/destacadas", getFeatured);
 router.get("/:id", getEmpresaById);
 
 router.get("/:id/images", getEmpresaImages);
+
+router.get("/:id/maps", getEmpresaMaps);
 
 router.get("/:id/slots/:date", getEmpresaSlots);
 
