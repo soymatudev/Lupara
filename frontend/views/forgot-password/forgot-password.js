@@ -1,14 +1,14 @@
 import { Alerts } from '../shared/Alerts.js'; 
+import { AuthService } from '../shared/AuthService.js';
 import { RouterViews } from '../shared/RouterViews.js';
 import { api } from '../shared/ApiClient.js'; // Necesitas el cliente base
 
-document.getElementById('forgotPasswordForm').addEventListener('submit', async (e) => {
-    e.preventDefault(); 
+document.getElementById('forgotPasswordForm').addEventListener('submit', async (event) => {
+    event.preventDefault(); 
     const email = document.getElementById('email').value;
 
     try {
-        const endpoint = '/auth/forgot-password'; // npm install nodemailer
-        await api.post(endpoint, { correo: email });
+        await AuthService.forgotPassword(email);
         
         Alerts.showSuccess(
             '¡Correo Enviado!', 

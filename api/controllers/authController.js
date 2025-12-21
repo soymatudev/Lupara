@@ -113,22 +113,39 @@ exports.userStatus = (req, res) => {
   }
 };
 
-/* Codigo para comprobar token
+exports.forgotPassword = async (req, res) => {
+  const { useremail } = req.body;
 
-const token = req.cookies.access_token;
-
-    if(!token) {
-        Logger.info('No access token found in cookies');
-        return res.status(400).json({ message: 'No token provided' });
+  try {
+    const result = await authService.forgotPassword(useremail);
+    if (result.success) {
+      return res
+        .status(200)
+        .json({ message: "Password reset email sent successfully" });
+    } else {
+      return res.status(400).json({ message: result.message });
     }
+  } catch (error) {
+    Logger.error(`Forgot password error: ${error.message}`);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 
-    try {
-        const data = jwt.verify(token, process.env.JWT_SECRET);
-        res.clearCookie('token');
-        res.status(200).json({ message: 'Logout successful' });
-    } catch {
-        Logger.warn('Invalid token during logout');
-        res.status(400).json({ message: 'Invalid token' });
+exports.resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    const result = await authService.resetPassword(token, newPassword);
+    if (result.success) {
+      return res
+        .status(200)
+        .json({ message: "Password has been reset successfully" });
+    } else {
+      return res.status(400).json({ message: result.message });
     }
-
-*/
+  } catch (error) {
+    Logger.error(`Reset password error: ${error.message}`);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};

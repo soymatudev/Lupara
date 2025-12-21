@@ -16,6 +16,10 @@ export const AuthService = {
 
     isLoggedIn: async () => {
         return api.get('/auth/status');
-    }
+    },
+
+    forgotPassword: async (email) => {
+        return api.post('/auth/forgot-password', { useremail: email });
+    },
 
 };

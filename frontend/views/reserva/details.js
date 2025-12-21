@@ -119,6 +119,14 @@ function renderGallery(images) {
 }
 
 function renderMapsSection(address) {
+  if (!address) {
+    document.getElementById("maps-section").innerHTML = `
+        <div class="h-64 bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
+            Mapa no disponible para este proveedor.
+        </div>
+    `;
+    return;
+  }
   const mapsContainer = document.getElementById("maps-section");
   const mapsHtml = `
       <iframe

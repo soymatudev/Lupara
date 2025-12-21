@@ -1,6 +1,8 @@
 const Logger = require('../utils/Logger');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const Mailer = require('../utils/Mailer');
 const QueryHandler = require('../utils/QueryHandler');
 require('dotenv').config();
 
@@ -79,6 +81,34 @@ exports.userCreate = async (id_rol, nombre, apellido_paterno, apellido_materno, 
         Logger.error(`User creation error: ${error.message}`);
         throw new Error('User creation failed');
     }
+}
+
+exports.forgotPassword = async (email) => {
+    try {
+        const user = await QueryHandler.execute(`select id 
+        from reserva.usuarios where correo = ?`, [email], 'main');
+
+        if (user.length === 0) {
+            Logger.warn(`Password reset requested for non-existent email: ${email}`);
+            return { success: false };
+        }
+
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const tokenExpiry = new Date(Date.now() + 3600000);
+
+        await QueryHandler.execute(`update reserva.usuarios 
+        set reset_token = ?, reset_token_expiry = ? 
+        where correo = ?`, [resetToken, tokenExpiry, email], 'main');
+
+        const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+        await Mailer.sendResetPasswordEmail(email, resetUrl);
+        Logger.info(`Password reset email sent to: ${email}`);
+        return { success: true }
+    } catch (error) {
+        Logger.error(`Forgot password error: ${error.message}`);
+        throw new Error('Forgot password process failed');
+    }
+
 }
 
 exports.verifyToken = (token) => {
