@@ -1,31 +1,29 @@
 import { EmpresaService } from "../shared/EmpresaService.js";
-import { RouterViews } from "../shared/RouterViews.js";
-import { AuthService } from "../shared/AuthService.js";
+import { HeaderComponent } from "../shared/components/HeaderComponent.js";
 import { Alerts } from "../shared/Alerts.js";
 
 const searchInput = document.getElementById("search-input");
-const searchResultsContainer = document.getElementById(
-  "search-results-container"
-);
+const searchResultsContainer = document.getElementById( "search-results-container");
 const searchButton = document.getElementById("search-button");
-const logoLink = document.querySelector(".logo-link");
-const logoutButton = document.getElementById("logout-button");
+const galleryContainer = document.getElementById("establishment-gallery");
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    HeaderComponent.loadHeader("main-header");
+    loadFeaturedEstablishments();
+  }, 1000);
+});
 
 searchButton.addEventListener("click", () =>
   handleSearch(searchInput.value, true)
 );
+
 searchInput.addEventListener(
   "input",
   debounce((e) => {
     handleSearch(e.target.value);
   })
 );
-logoutButton.addEventListener("click", () => logout());
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    loadFeaturedEstablishments();
-  }, 1000);
-});
 
 const SearchService = {
   search: async (query) => {
@@ -40,15 +38,6 @@ const SearchService = {
       .slice(0, 5);
   },
 };
-
-async function logout() {
-  try {
-    await AuthService.logoutUser();
-    RouterViews.auth();
-  } catch (error) {
-    Alerts.showError("Error de Logout", "No se pudo cerrar la sesión.");
-  }
-}
 
 async function handleSearch(query, isButtonClick = false) {
   if (query.length < 3 && !isButtonClick) {
@@ -100,13 +89,6 @@ function debounce(func, delay) {
     timeout = setTimeout(() => func.apply(this, args), delay);
   };
 }
-
-logoLink.addEventListener("click", (e) => {
-  e.preventDefault();
-  RouterViews.home();
-});
-
-const galleryContainer = document.getElementById("establishment-gallery");
 
 async function loadFeaturedEstablishments() {
   try {

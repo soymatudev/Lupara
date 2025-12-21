@@ -1,0 +1,102 @@
+{
+  "name": "Lupara API Public Endpoints",
+  "version": "1.0.0",
+  "requests": [
+    {
+      "name": "Root",
+      "description": "Mensaje de bienvenida de la API.",
+      "method": "GET",
+      "url": "http://localhost:3000/"
+    },
+    {
+      "name": "Health Check",
+      "description": "Verifica el estado de la API.",
+      "method": "GET",
+      "url": "http://localhost:3000/health"
+    },
+    {
+      "name": "Register User",
+      "description": "Registrar un nuevo usuario.",
+      "method": "POST",
+      "url": "http://localhost:3000/auth/register",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "nombre": "Usuario",
+        "apellido": "De Prueba",
+        "email": "test@example.com",
+        "password": "password123",
+        "telefono": "1234567890"
+      }
+    },
+    {
+      "name": "Login User",
+      "description": "Iniciar sesión con un usuario existente.",
+      "method": "POST",
+      "url": "http://localhost:3000/auth/login",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "email": "test@example.com",
+        "password": "password123"
+      }
+    },
+    {
+      "name": "Get All Empresas",
+      "description": "Lista todas las empresas disponibles.",
+      "method": "GET",
+      "url": "http://localhost:3000/empresas"
+    },
+    {
+      "name": "Get Featured Empresas",
+      "description": "Obtiene las empresas destacadas.",
+      "method": "GET",
+      "url": "http://localhost:3000/empresas/destacadas"
+    },
+    {
+      "name": "Get Empresa by ID",
+      "description": "Obtiene una empresa por su ID. Reemplazar {id} por un ID real.",
+      "method": "GET",
+      "url": "http://localhost:3000/empresas/{id}",
+      "params": {
+        "id": "1"
+      }
+    },
+    {
+      "name": "Get Empresa Images",
+      "description": "Obtiene las imágenes de una empresa. Reemplazar {id} por un ID real.",
+      "method": "GET",
+      "url": "http://localhost:3000/empresas/{id}/images",
+      "params": {
+        "id": "1"
+      }
+    },
+    {
+      "name": "Get Empresa Maps",
+      "description": "Obtiene los mapas de una empresa. Reemplazar {id} por un ID real.",
+      "method": "GET",
+      "url": "http://localhost:3000/empresas/{id}/maps",
+      "params": {
+        "id": "1"
+      }
+    },
+    {
+      "name": "Get Empresa Slots",
+      "description": "Obtiene los horarios de una empresa para una fecha. Reemplazar {id} y {date}.",
+      "method": "GET",
+      "url": "http://localhost:3000/empresas/{id}/slots/{date}",
+      "params": {
+        "id": "1",
+        "date": "2025-12-24"
+      }
+    },
+    {
+      "name": "Get All Roles",
+      "description": "Obtiene todos los roles de componentes.",
+      "method": "GET",
+      "url": "http://localhost:3000/componentes/roles"
+    }
+  ]
+}

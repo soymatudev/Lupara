@@ -16,7 +16,7 @@ exports.getReservas = async (req, res) => {
     res.status(200).json(reservas);
   } catch (error) {
     Logger.error(`Error fetching reservas: ${error.message}`);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -29,22 +29,21 @@ exports.getReservacionById = async (req, res) => {
       reservaId,
       userId
     );
-    res.status(200).json(reserva);
+    return res.status(200).json(reserva);
   } catch (error) {
     Logger.error(`Error fetching reservacion by ID: ${error.message}`);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
 exports.getUserReservaciones = async (req, res) => {
   const userId = req.user.id;
-
   try {
     const reservas = await reservacionService.getUserReservaciones(userId);
-    res.status(200).json(reservas);
+    return res.status(200).json(reservas);
   } catch (error) {
     Logger.error(`Error fetching user reservaciones: ${error.message}`);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -62,24 +61,22 @@ exports.createReservacion = async (req, res) => {
       hora,
       cantidad
     );
-    res
-      .status(201)
+    return res.status(201)
       .json({ message: "Reserva created successfully", reservacion: newReservacion });
   } catch (error) {
     Logger.error(`Error creating reserva: ${error.message}`);
-    res.status(500).json({ message: "Failed to create reserva" });
+    return res.status(500).json({ message: "Failed to create reserva" });
   }
 };
 
 exports.cancelReservacion = async (req, res) => {
   const reservaId = req.params.id;
   const userId = req.user.id;
-
   try {
     await reservacionService.cancelReservacion(reservaId, userId);
-    res.status(200).json({ message: "Reserva deleted successfully" });
+    return res.status(200).json({ message: "Reserva deleted successfully" });
   } catch (error) {
     Logger.error(`Error deleting reserva: ${error.message}`);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

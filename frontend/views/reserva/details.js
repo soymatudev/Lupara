@@ -1,5 +1,5 @@
-import { api } from "../shared/ApiClient.js";
 import { Alerts } from "../shared/Alerts.js";
+import { HeaderComponent } from "../shared/components/HeaderComponent.js";
 import { RouterViews } from "../shared/RouterViews.js";
 import { AuthService } from "../shared/AuthService.js";
 import { EmpresaService } from "../shared/EmpresaService.js";
@@ -7,16 +7,29 @@ import { ReservacionService } from "../shared/ReservacionService.js";
 
 let providerId = null;
 
-const logoutButton = document.getElementById("logout-button");
-logoutButton.addEventListener("click", () => logout());
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    providerId = getProviderIdFromUrl();
+    if (providerId) {
+      fetchProviderDetails(providerId);
+      HeaderComponent.loadHeader("main-header");
+      setMinDate();
+    } else {
+      Alerts.showError(
+        "URL Inválida",
+        "La información del proveedor no está disponible."
+      );
+    }
+    const reservationDateInput = document.getElementById("reservation-date");
+    const reservationTimeSelect = document.getElementById("reservation-time");
+    reservationDateInput.addEventListener("change", updateAvailableSlots);
+  }, 1500);
+});
 
-async function logout() {
-  try {
-    await AuthService.logoutUser();
-    RouterViews.auth();
-  } catch (error) {
-    Alerts.showError("Error de Logout", "No se pudo cerrar la sesión.");
-  }
+function setMinDate() {
+  const reservationDateInput = document.getElementById("reservation-date");
+  const today = new Date().toISOString().split('T')[0];
+  reservationDateInput.setAttribute('min', today);
 }
 
 function getProviderIdFromUrl() {
@@ -53,7 +66,7 @@ async function fetchProviderDetails(id) {
 function renderDetails(data) {
   document.getElementById("page-title").textContent = data.nombre_proveedor;
   document.getElementById("provider-name").textContent = data.nombre_proveedor;
-  document.getElementById("provider-category").textContent = data.tipo_servicio; // Viene del JOIN
+  document.getElementById("provider-category").textContent = data.tipo_servicio;
   document.getElementById("provider-description").textContent =
     data.descripcion_larga || data.descripcion_corta;
   document.getElementById("provider-address").textContent = data.direccion;
@@ -160,66 +173,51 @@ async function updateAvailableSlots() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  providerId = getProviderIdFromUrl();
-  if (providerId) {
-    fetchProviderDetails(providerId);
-  } else {
+async function isLoggedIn() {
+  const loggedIn = await AuthService.isLoggedIn();
+  
+  if (!loggedIn.loggedIn) {
     Alerts.showError(
-      "URL Inválida",
-      "La información del proveedor no está disponible."
+      "Acceso Denegado",
+      "Debes iniciar sesión para hacer una reserva.",
+      3000, RouterViews.auth
     );
+    return;
   }
-  const reservationDateInput = document.getElementById("reservation-date");
-  const reservationTimeSelect = document.getElementById("reservation-time");
-  reservationDateInput.addEventListener("change", updateAvailableSlots);
+}
+
+function getReservationData() {
+  return {
+    empresaId: providerId,
+    fecha: document.getElementById("reservation-date").value,
+    hora: document.getElementById("reservation-time").value,
+    cantidad: parseInt(document.getElementById("reservation-pax").value),
+  };
+}
+
+document.getElementById("reservation-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  isLoggedIn();
+  
+  const reservationData = getReservationData();
+
+  if (!reservationData.hora) {
+    Alerts.showWarning(
+      "Atención",
+      "Por favor, selecciona una hora disponible.",
+      2000
+    );
+    return;
+  }
+
+  try {
+    const response = await ReservacionService.createReservacion(
+      reservationData
+    );
+    Alerts.showSuccess("¡Reserva Creada!", response.message, 2000);
+    updateAvailableSlots();
+  } catch (error) {
+    const message = error.response?.data?.message || "Hubo un error al procesar tu solicitud.";
+    Alerts.showError("Fallo en la Reserva", message, 3000);
+  }
 });
-
-document
-  .getElementById("reservation-form")
-  .addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const loggedIn = await AuthService.isLoggedIn();
-    console.log("User logged in:", loggedIn.loggedIn);
-    if (!loggedIn.loggedIn) {
-      Alerts.showError(
-        "Acceso Denegado",
-        "Debes iniciar sesión para hacer una reserva.",
-        3000,
-        () => {
-          RouterViews.auth();
-        }
-      );
-      return;
-    }
-
-    const reservationData = {
-      empresaId: providerId,
-      fecha: document.getElementById("reservation-date").value,
-      hora: document.getElementById("reservation-time").value,
-      cantidad: parseInt(document.getElementById("reservation-pax").value),
-    };
-
-    if (!reservationData.hora) {
-      Alerts.showWarning(
-        "Atención",
-        "Por favor, selecciona una hora disponible.",
-        2000
-      );
-      return;
-    }
-
-    try {
-      const response = await ReservacionService.createReservacion(
-        reservationData
-      );
-
-      Alerts.showSuccess("¡Reserva Creada!", response.message, 2000);
-      updateAvailableSlots();
-    } catch (error) {
-      const message =
-        error.response?.data?.message ||
-        "Hubo un error al procesar tu solicitud.";
-      Alerts.showError("Fallo en la Reserva", message, 3000);
-    }
-  });

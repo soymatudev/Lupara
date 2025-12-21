@@ -45,7 +45,6 @@ class ValidatorUtil {
     }
 
     static validarEmail(email) {
-        // Expresión Regular para un formato de email básico (nombre@dominio.tld)
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(String(email).toLowerCase());
     }

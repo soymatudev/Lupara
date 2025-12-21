@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Reservas | TechReserva</title>
+    <link rel="stylesheet" href="./mis-reservas.css" />
+<body class="bg-gradient-tech min-h-screen text-gray-800">
+
+    <header id="main-header" class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        </header>
+
+    <main class="max-w-6xl mx-auto px-4 py-10">
+        <header class="mb-8">
+            <h1 class="text-3-6xl font-extrabold text-ellipsis drop-shadow-md">Mis Reservas</h1>
+            <p class="text-blue-300 ">Gestiona tus próximas citas y revisa tu historial.</p>
+        </header>
+
+        <div id="reservations-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="animate-pulse bg-white/50 h-48 rounded-2xl"></div>
+            <div class="animate-pulse bg-white/50 h-48 rounded-2xl"></div>
+            <div class="animate-pulse bg-white/50 h-48 rounded-2xl"></div>
+        </div>
+
+        <div id="no-reservations" class="hidden text-center py-20">
+            <div class="bg-white/10 inline-block p-6 rounded-full mb-4">
+                <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-ellipsis">Aún no tienes reservas</h3>
+            <p class="text-blue-300 mb-6">¿Qué tal si buscas algo nuevo hoy?</p>
+            <a href="../home/index.html" class="bg-white text-blue-700 px-8 py-3 rounded-xl font-bold hover:shadow-lg transition">Explorar lugares</a>
+        </div>
+    </main>
+
+    <link href="/css/input.css" rel="stylesheet" />
+    <script type="module" src="./mis-reservas.js"></script>
+</body>
+</html>

@@ -15,13 +15,11 @@ exports.userLogin = async (req, res) => {
     const result = await authService.userLogin(useremail, password);
     if (result.success) {
       // quitar el token del return
-      return res
-        .cookie("access_token", result.token, {
+      return res.cookie("access_token", result.token, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: "Strict",
-        })
-        .status(200)
+        }).status(200)
         .json({
           message: "Login successful",
           userId: result.UserId,
@@ -33,7 +31,7 @@ exports.userLogin = async (req, res) => {
       return res.status(401).json({ message: result.message });
     }
   } catch (error) {
-    Logger.error(`Admin login error: ${error.message}`);
+    Logger.error(`Login error: ${error.message}`);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

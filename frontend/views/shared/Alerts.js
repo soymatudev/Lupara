@@ -37,4 +37,18 @@ export const Alerts = {
       cancelButtonText: "Cancelar",
     });
   },
+
+  showConfirm: async (title, text) => {
+    const result = await Swal.fire({
+      title: title || "¿Estás seguro?",
+      text: text || "No podrás revertir esta acción.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, continuar",
+      cancelButtonText: "Cancelar",
+    });
+    return result.isConfirmed;
+  }
 };

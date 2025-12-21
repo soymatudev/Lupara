@@ -2,8 +2,8 @@ import { AuthService } from '../shared/AuthService.js';
 import { RouterViews } from '../shared/RouterViews.js';
 import { Alerts } from '../shared/Alerts.js';
 
-document.getElementById('loginForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+document.getElementById('loginForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
     
     const password = document.getElementById('password').value;
     const useremail = document.getElementById('useremail').value;

@@ -38,7 +38,6 @@ exports.userLogin = async (correo, password) => {
 
         Logger.info(`User ${user.nombre} logged in successfully`);
         return { success: true, token, UserId: user.id, nombre: user.nombre };
-
     } catch (error) {
         Logger.error(`User login error: ${error.message}`);
         throw new Error('User login failed');

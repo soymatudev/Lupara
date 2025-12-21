@@ -1,5 +1,6 @@
 const Logger = require("../utils/Logger");
 const QueryHandler = require("../utils/QueryHandler");
+const dayjs = require('dayjs');
 
 /**
  * @returns {Promise<Object>} Empresa information
@@ -33,9 +34,7 @@ exports.getEmpresaById = async (empresaId) => {
     Logger.info(`Fetched empresa details for ID: ${empresaId}`);
     return results[0];
   } catch (error) {
-    Logger.error(
-      `Error fetching empresa by ID from database: ${empresaId} ${error.message}`
-    );
+    Logger.error(`Error fetching empresa by ID from database: ${empresaId} ${error.message}`);
     throw new Error("Failed to fetch empresa by ID");
   }
 };
@@ -47,14 +46,10 @@ exports.getEmpresaImages = async (empresaId) => {
     and a.id_proveedor = ?`;
   try {
     const results = await QueryHandler.execute(sql, [empresaId], "main");
-    Logger.info(
-      `Fetched ${results.length} images for empresa ID: ${empresaId}`
-    );
+    Logger.info(`Fetched ${results.length} images for empresa ID: ${empresaId}`);
     return results;
   } catch (error) {
-    Logger.error(
-      `Error fetching empresa images from database: ${error.message}`
-    );
+    Logger.error(`Error fetching empresa images from database: ${error.message}`);
     throw new Error("Failed to fetch empresa images");
   }
 };
@@ -72,74 +67,49 @@ exports.getEmpresaMaps = async (empresaId) => {
 };
 
 exports.getEmpresaSlots = async (empresaId, selectDate) => {
-  const SLOT_DURATION_MINUTES = 30;
+  const slot_duration = 30;
 
-  if (!selectDate) {
-    Logger.warn("getEmpresaSlots called without a date.");
-    return [];
-  }
-  const targetDate = new Date(selectDate + "T00:00:00");
-  const dayOfWeek = targetDate.getDay();
+  if (!selectDate) return [];
+
+  const targetDate = dayjs(selectDate); //(YYYY-MM-DD)
+  const isToday = targetDate.isSame(dayjs(), 'day');
+  const dayOfWeek = targetDate.day(); // 0 (Dom) - 6 (Sáb)
 
   const resultHorarios = await getEmpresaHorarios(empresaId, dayOfWeek);
-  if (resultHorarios.length === 0) {
-    Logger.warn(
-      `No horarios found for empresa ID: ${empresaId} on day: ${dayOfWeek}`
-    );
-    return [];
-  }
+  if (resultHorarios.length === 0) return [];
+
   const { hora_apertura, hora_cierre } = resultHorarios[0];
+  let start = dayjs(`${selectDate} ${hora_apertura}`);
+  const end = dayjs(`${selectDate} ${hora_cierre}`);
 
-  const occupiedSlots = await exports.getEmpresaReservasOcupadas(
-    empresaId,
-    selectDate
-  );
-
-  const allSlots = [];
-  let currentTime = parseTime(hora_apertura);
-  const closingTime = parseTime(hora_cierre);
-
-  while (currentTime + SLOT_DURATION_MINUTES <= closingTime) {
-    allSlots.push(formatTime(currentTime));
-    currentTime += SLOT_DURATION_MINUTES;
+  if (isToday) {
+    const now = dayjs();
+    if (now.isAfter(start)) {
+      const minutesToWait = slot_duration - (now.minute() % slot_duration);
+      start = now.add(minutesToWait, 'minute').second(0).millisecond(0);
+    }
   }
 
-  const availableSlots = allSlots.filter((slot) => {
-    const slotStart = new Date(`${selectDate}T${slot}:00`).getTime();
-    const slotEnd = slotStart + SLOT_DURATION_MINUTES * 60000;
+  const slotsOcupados = await exports.getEmpresaReservasOcupadas(empresaId, selectDate);
+  const availableSlots = [];
+  let currentSlot = start;
 
-    const isOccupied = occupiedSlots.some((res) => {
-      const resStart = new Date(res.fecha_hora_inicio).getTime();
-      const resEnd = new Date(res.fecha_hora_fin).getTime();
-      return slotStart < resEnd && slotEnd > resStart;
+  while (currentSlot.add(slot_duration, 'minute').isBefore(end) 
+        || currentSlot.add(slot_duration, 'minute').isSame(end)) {
+    const slotStart = currentSlot;
+    const slotEnd = currentSlot.add(slot_duration, 'minute');
+
+    const isOccupied = slotsOcupados.some((res) => {
+      const resStart = dayjs(res.fecha_hora_inicio);
+      const resEnd = dayjs(res.fecha_hora_fin);
+      return slotStart.isBefore(resEnd) && slotEnd.isAfter(resStart);
     });
 
-    return !isOccupied;
-  });
-
-  const now = new Date();
-  if (targetDate.toDateString() === now.toDateString()) {
-    const currentTimeInMinutes = now.getHours() * 60 + now.getMinutes();
-    return availableSlots.filter((slot) => {
-      return parseTime(slot) >= currentTimeInMinutes;
-    });
+    if (!isOccupied) availableSlots.push(currentSlot.format('HH:mm'));
+    currentSlot = currentSlot.add(slot_duration, 'minute');
   }
 
   return availableSlots;
-};
-
-const parseTime = (timeStr) => {
-  const [hours, minutes, seconds] = timeStr.split(":").map(Number);
-  return hours * 60 + minutes; // Devuelve el tiempo en minutos desde medianoche
-};
-
-const formatTime = (totalMinutes) => {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
-    2,
-    "0"
-  )}`;
 };
 
 const getEmpresaHorarios = async (empresaId, dayOfWeek) => {
@@ -147,19 +117,11 @@ const getEmpresaHorarios = async (empresaId, dayOfWeek) => {
     const sql = `SELECT hora_apertura, hora_cierre 
         FROM reserva.horarios 
         WHERE id_proveedor = ? AND dia_semana = ?`;
-    const results = await QueryHandler.execute(
-      sql,
-      [empresaId, dayOfWeek],
-      "main"
-    );
-    Logger.info(
-      `Fetched horarios for empresa ID: ${empresaId} on day: ${dayOfWeek}`
-    );
+    const results = await QueryHandler.execute(sql, [empresaId, dayOfWeek], "main" );
+    Logger.info(`Fetched horarios for empresa ID: ${empresaId} on day: ${dayOfWeek}`);
     return results;
   } catch (error) {
-    Logger.error(
-      `Error fetching empresa horarios from database: ${error.message}`
-    );
+    Logger.error(`Error fetching empresa horarios from database: ${error.message}`);
     throw new Error("Failed to fetch empresa horarios");
   }
 };
@@ -174,19 +136,11 @@ exports.getEmpresaReservasOcupadas = async (empresaId, selectDate) => {
         WHERE id_proveedor = ?
           AND DATE(fecha_hora_inicio) = ?
           AND id_estado = 2`;
-    const results = await QueryHandler.execute(
-      sql,
-      [empresaId, selectDate],
-      "main"
-    );
-    Logger.info(
-      `Fetched occupied reservas for empresa ID: ${empresaId} on date: ${selectDate}`
-    );
+    const results = await QueryHandler.execute(sql, [empresaId, selectDate], "main" );
+    Logger.info( `Fetched occupied reservas for empresa ID: ${empresaId} on date: ${selectDate}`);
     return results;
   } catch (error) {
-    Logger.error(
-      `Error fetching empresa reservas from database: ${error.message}`
-    );
+    Logger.error(`Error fetching empresa reservas from database: ${error.message}`);
     throw new Error("Failed to fetch empresa reservas");
   }
 };
@@ -210,9 +164,7 @@ exports.getFeaturedEmpresas = async () => {
     Logger.info(`Fetched ${results.length} featured items`);
     return results;
   } catch (error) {
-    Logger.error(
-      `Error fetching featured items from database: ${error.message}`
-    );
+    Logger.error(`Error fetching featured items from database: ${error.message}`);
     throw new Error("Failed to fetch featured items");
   }
 };

@@ -10,7 +10,7 @@ export const ReservacionService = {
     },
 
     getUserReservaciones: async (userId) => {
-        return api.get(`/usuarios/${userId}/reservaciones`);
+        return api.get(`/reservaciones/mis-reservas`);
     },
 
     updateReservacion: async (reservacionId, reservacionData) => {
