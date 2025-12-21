@@ -31,9 +31,15 @@ class Logger {
 
         const logMessage = `[${timeStamp}] [${level.toUpperCase()}] [${callerInfo}] >>> ${message} \n`;
 
-        fs.appendFile(LOG_FILE_PATH, logMessage, (e) => {
-            if (e) console.error('Error writing to log file:', e);
-        });
+        const isProduction = process.env.NODE_ENV === 'production';
+        if (!isProduction) {
+            fs.appendFile(LOG_FILE_PATH, logMessage, (e) => {
+                if (e) console.error('Error writing to log file:', e);
+            });
+        } else {
+            console.log(logMessage.trim());
+        }
+        
     }
 
     static info(message) {
