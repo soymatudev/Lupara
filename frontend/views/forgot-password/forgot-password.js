@@ -1,7 +1,35 @@
 import { Alerts } from '../shared/Alerts.js'; 
 import { AuthService } from '../shared/AuthService.js';
 import { RouterViews } from '../shared/RouterViews.js';
-import { api } from '../shared/ApiClient.js'; // Necesitas el cliente base
+
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
+    if (token) {
+        document.getElementById('email-request-section').classList.add('hidden');
+        document.getElementById('reset-password-section').classList.remove('hidden');
+    }
+
+    const resetForm = document.getElementById('reset-form');
+    resetForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (newPassword !== confirmPassword) {
+            return Alerts.showError('Error', 'Las contraseñas no coinciden.');
+        }
+
+        try {
+            await api.post('/auth/reset-password', { token, newPassword });
+            Alerts.showSuccess('¡Éxito!', 'Tu contraseña ha sido actualizada.');
+            setTimeout(() => window.location.href = '../auth/index.html', 2000);
+        } catch (error) {
+            Alerts.showError('Error', error.response?.data?.message || 'Token inválido o expirado.');
+        }
+    });
+})
 
 document.getElementById('forgotPasswordForm').addEventListener('submit', async (event) => {
     event.preventDefault(); 

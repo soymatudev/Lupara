@@ -100,8 +100,10 @@ exports.forgotPassword = async (email) => {
         set reset_token = ?, reset_token_expiry = ? 
         where correo = ?`, [resetToken, tokenExpiry, email], 'main');
 
-        const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-        await Mailer.sendResetPasswordEmail(email, resetUrl);
+        let = resetUrl =""
+        resetUrl = `${process.env.FRONTEND_URL}/views/forgot-password/index.html?token=${resetToken}`;
+        Logger.info(`Generated password reset URL for ${email}: ${resetUrl}`);
+        const result = await Mailer.sendResetPasswordEmail(email, resetUrl);
         Logger.info(`Password reset email sent to: ${email}`);
         return { success: true }
     } catch (error) {
@@ -109,6 +111,31 @@ exports.forgotPassword = async (email) => {
         throw new Error('Forgot password process failed');
     }
 
+}
+
+exports.resetPassword = async (token, newPassword) => {
+    try {
+        const user = await QueryHandler.execute(`select id, reset_token_expiry 
+        from reserva.usuarios where reset_token = ?`, [token], 'main');
+
+        if (user.length === 0 || new Date() > new Date(user[0].reset_token_expiry)) {
+            Logger.warn(`Invalid or expired password reset token: ${token}`);
+            return { success: false, message: 'Invalid or expired token' };
+        }
+
+        const saltRounds = parseInt(process.env.HASH_ROUNDS);
+        const passwordHash = await bcrypt.hash(newPassword, saltRounds);
+
+        await QueryHandler.execute(`update reserva.usuarios 
+        set password_hash = ?, reset_token = NULL, reset_token_expiry = NULL 
+        where id = ?`, [passwordHash, user[0].id], 'main');
+
+        Logger.info(`Password reset successfully for user ID: ${user[0].id}`);
+        return { success: true };
+    } catch (error) {
+        Logger.error(`Reset password error: ${error.message}`);
+        throw new Error('Reset password process failed');
+    }
 }
 
 exports.verifyToken = (token) => {

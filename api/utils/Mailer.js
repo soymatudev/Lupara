@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -8,7 +9,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-exports.sendResetPasswordEmail = async (emailTo, resertUrl) => {
+exports.sendResetPasswordEmail = async (emailTo, resetUrl) => {
     const mailOptions = {
         from: '"TechReserva Support" <noreply@techreserva.com>',
         to: emailTo,
