@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const LOG_FILE_PATH = path.join(__dirname, '../../logs/process.log');
+const isProduction = process.env.NODE_ENV === 'production';
 
 class Logger {
 
@@ -31,7 +32,6 @@ class Logger {
 
         const logMessage = `[${timeStamp}] [${level.toUpperCase()}] [${callerInfo}] >>> ${message} \n`;
 
-        const isProduction = process.env.NODE_ENV === 'production';
         if (!isProduction) {
             fs.appendFile(LOG_FILE_PATH, logMessage, (e) => {
                 if (e) console.error('Error writing to log file:', e);
@@ -55,7 +55,7 @@ class Logger {
     }
 }
 
-if (!fs.existsSync(path.join(__dirname, '../../logs'))) {
+if (!fs.existsSync(path.join(__dirname, '../../logs')) && !isProduction) {
     fs.mkdirSync(path.join(__dirname, '../../logs'));
 }
 
