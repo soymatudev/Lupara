@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
 const LOG_FILE_PATH = path.join(__dirname, '../../logs/process.log');
 const isProduction = process.env.NODE_ENV === 'production';
