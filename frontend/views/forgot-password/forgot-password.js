@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            await api.post('/auth/reset-password', { token, newPassword });
+            const result = await AuthService.resetPassword(token, newPassword);
             Alerts.showSuccess('¡Éxito!', 'Tu contraseña ha sido actualizada.');
             setTimeout(() => window.location.href = '../auth/index.html', 2000);
         } catch (error) {
