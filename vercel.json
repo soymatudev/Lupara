@@ -13,6 +13,13 @@
       }
     }
   ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/views/auth/index.html",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/(.*)",
