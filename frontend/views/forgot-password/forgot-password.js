@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = urlParams.get('token');
 
     if (token) {
-        document.getElementById('email-request-section').classList.add('hidden');
+        document.getElementById('forgotPasswordForm').classList.add('hidden');
         document.getElementById('reset-password-section').classList.remove('hidden');
     }
 
