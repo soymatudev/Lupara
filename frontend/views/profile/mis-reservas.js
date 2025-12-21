@@ -1,4 +1,4 @@
-import { HeaderComponent } from "../shared/components/HeaderComponent.js";
+import { HeaderComponent } from "/views/shared/components/HeaderComponent.js";
 import { ReservacionService } from "../shared/ReservacionService.js";
 import { Alerts } from "../shared/Alerts.js";
 import dayjs from 'dayjs';

@@ -1,5 +1,5 @@
 import { EmpresaService } from "../shared/EmpresaService.js";
-import { HeaderComponent } from "../shared/components/HeaderComponent.js";
+import { HeaderComponent } from "/views/shared/components/HeaderComponent.js";
 import { Alerts } from "../shared/Alerts.js";
 
 const searchInput = document.getElementById("search-input");

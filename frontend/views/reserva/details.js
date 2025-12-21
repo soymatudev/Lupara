@@ -1,5 +1,5 @@
 import { Alerts } from "../shared/Alerts.js";
-import { HeaderComponent } from "../shared/components/HeaderComponent.js";
+import { HeaderComponent } from "/views/shared/components/HeaderComponent.js";
 import { RouterViews } from "../shared/RouterViews.js";
 import { AuthService } from "../shared/AuthService.js";
 import { EmpresaService } from "../shared/EmpresaService.js";

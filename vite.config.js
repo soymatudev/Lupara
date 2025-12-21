@@ -16,6 +16,7 @@ export default defineConfig({
         mis_reservas: resolve(__dirname, 'frontend/views/profile/mis-reservas.html'),
         register: resolve(__dirname, 'frontend/views/register/index.html'),
         details: resolve(__dirname, 'frontend/views/reserva/details.html'),
+        header_script: resolve(__dirname, 'frontend/views/shared/components/header.html'),
       }
     }
   },
