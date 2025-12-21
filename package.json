@@ -6,7 +6,8 @@
         "start": "node api/index.js",
         "start:backend": "nodemon api/index.js",
         "dev": "vite",
-        "build": "vite build frontend",
+        "build": "vite build frontend --outDir ../dist",
+        "install": "npm install && cd api && npm install",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
