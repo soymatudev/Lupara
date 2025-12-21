@@ -6,7 +6,7 @@
         "start": "node api/index.js",
         "start:backend": "nodemon api/index.js",
         "dev": "vite",
-        "build": "vite build",
+        "build": "vite build frontend",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
