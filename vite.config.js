@@ -24,7 +24,6 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
-        r//ewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/assets': {
         target: 'http://localhost:3000',
